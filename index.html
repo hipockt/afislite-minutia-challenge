@@ -154,6 +154,66 @@ button.primary { border-color: var(--blue); background: var(--blue); color: #fff
 
 footer { margin-top: 16px; padding: 18px 22px; color: var(--muted); font-size: .9rem; text-align: center; }
 
+/* AFISLITE startup splash — matches the comparison demo. */
+#afisSplash {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: #0b1118;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity .7s ease, visibility .7s ease;
+}
+
+#afisSplash.hide {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+#afisSplash .splash-card {
+  position: relative;
+  width: min(620px, 84vw);
+  aspect-ratio: 2 / 1;
+  background-image: url("AFISLITE_splash.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  box-shadow: 0 18px 60px rgba(0, 0, 0, .55);
+  overflow: hidden;
+  border-radius: 2px;
+}
+
+#afisSplash .brand {
+  position: absolute;
+  left: 7.8%;
+  top: 34%;
+  color: #1a4f82;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, .7);
+}
+
+#afisSplash .brand-title {
+  font: 700 clamp(28px, 4.8vw, 46px) / 1.05 Arial, Helvetica, sans-serif;
+  letter-spacing: .5px;
+}
+
+#afisSplash .brand-subtitle {
+  margin-top: 7px;
+  font: 400 clamp(13px, 2vw, 18px) / 1.15 Arial, Helvetica, sans-serif;
+  color: #3f76a4;
+}
+
+#afisSplash .copyright {
+  position: absolute;
+  left: 7%;
+  bottom: 5.2%;
+  font: 400 clamp(9px, 1.3vw, 12px) / 1.2 Arial, Helvetica, sans-serif;
+  color: #3f76a4;
+}
+
 @media (max-width: 620px) {
   .challenge-shell { width: 100%; margin: 0; }
   header, .workspace, footer { border-radius: 0; border-left: 0; border-right: 0; }
@@ -167,6 +227,16 @@ footer { margin-top: 16px; padding: 18px 22px; color: var(--muted); font-size: .
 </style>
 </head>
 <body>
+  <div id="afisSplash" role="dialog" aria-label="AFISLITE startup splash">
+    <div class="splash-card">
+      <div class="brand">
+        <div class="brand-title">AFISLITE</div>
+        <div class="brand-subtitle">Fingerprint Minutia Challenge</div>
+      </div>
+      <div class="copyright">Copyright © 2026 Norman Greenwood. All rights reserved.</div>
+    </div>
+  </div>
+
   <main class="challenge-shell">
     <header>
       <p class="eyebrow">AFISLITE TRAINING</p>
@@ -874,7 +944,13 @@ function startBrowserChallenge() {
 }
 
 if (typeof document !== 'undefined') {
-  document.addEventListener('DOMContentLoaded', startBrowserChallenge);
+  document.addEventListener('DOMContentLoaded', () => {
+    startBrowserChallenge();
+    window.setTimeout(() => {
+      const splash = document.getElementById('afisSplash');
+      if (splash) splash.classList.add('hide');
+    }, 2800);
+  });
 }
 
 
